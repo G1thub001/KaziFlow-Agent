@@ -1,11 +1,15 @@
 from fastapi import FastAPI
+
+from app.api.routes.auth import router as auth_router
 from app.core.config import settings
 
+from app.models import User
+
 app = FastAPI(
-    title=settings.APP_NAME,
-    version=settings.APP_VERSION,
-    description="AI-powered workflow automation platform."
+    title="KaziFlow Agent API"
 )
+
+app.include_router(auth_router)
 
 
 @app.get("/")
