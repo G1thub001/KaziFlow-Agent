@@ -1,6 +1,7 @@
 from sqlalchemy import String, Integer, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
+
 from app.database.base import Base
 
 
@@ -18,3 +19,9 @@ class Project(Base):
     )
 
     owner = relationship("User", back_populates="projects")
+
+    workflows = relationship(
+    "Workflow",
+    back_populates="project",
+    cascade="all, delete-orphan",
+)

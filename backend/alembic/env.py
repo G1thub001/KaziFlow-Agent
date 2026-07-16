@@ -22,6 +22,7 @@ from app.database.base import Base
 
 from app.models.user import User
 from app.models.project import Project
+from app.models.workflow import Workflow
 
 target_metadata = Base.metadata
 
