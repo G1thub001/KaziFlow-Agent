@@ -5,11 +5,15 @@ from app.core.config import settings
 
 from app.models import User
 
+from app.api.routes import auth
+from app.api.routes import projects
+
 app = FastAPI(
     title="KaziFlow Agent API"
 )
 
-app.include_router(auth_router)
+app.include_router(auth.router)
+app.include_router(projects.router)
 
 
 @app.get("/")

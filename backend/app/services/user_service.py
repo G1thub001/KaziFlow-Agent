@@ -40,12 +40,10 @@ def authenticate_user(db: Session, user: UserLogin):
         return None
 
     token = create_access_token(
-        {
-            "sub": str(db_user.id),
-            "email": db_user.email,
-        }
-    )
-
+    {
+        "sub": db_user.email,
+    }
+)
     return {
         "access_token": token,
         "token_type": "bearer",
