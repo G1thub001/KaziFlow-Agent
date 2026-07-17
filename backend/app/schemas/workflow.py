@@ -17,3 +17,7 @@ class WorkflowResponse(WorkflowBase):
 
     class Config:
         from_attributes = True
+
+
+class WorkflowRunRequest(BaseModel):
+    user_input: str

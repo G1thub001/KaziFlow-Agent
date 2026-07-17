@@ -2,7 +2,8 @@ from sqlalchemy.orm import Session
 
 from app.models.workflow import Workflow
 from app.schemas.workflow import WorkflowCreate
-
+from app.models.agent import Agent
+from app.engine.runner import WorkflowRunner
 
 def create_workflow(
     db: Session,
@@ -30,4 +31,25 @@ def get_project_workflows(
         db.query(Workflow)
         .filter(Workflow.project_id == project_id)
         .all()
+    )
+
+def run_workflow(
+    db: Session,
+    workflow_id: int,
+    user_input: str,
+):
+    workflow = (
+        db.query(Workflow)
+        .filter(Workflow.id == workflow_id)
+        .first()
+    )
+
+    if workflow is None:
+        return None
+
+    runner = WorkflowRunner()
+
+    return runner.run(
+        workflow,
+        user_input,
     )
