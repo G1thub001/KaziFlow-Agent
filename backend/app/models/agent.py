@@ -38,3 +38,18 @@ class Agent(Base):
         "Workflow",
         back_populates="agents",
     )
+
+    role: Mapped[str] = mapped_column(
+        String(255),
+        nullable=False,
+    )
+
+    goal: Mapped[str] = mapped_column(
+        String(1000),
+        nullable=False,
+    )
+
+    instructions: Mapped[str] = mapped_column(
+        String(2000),
+        nullable=True,
+    )

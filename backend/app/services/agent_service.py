@@ -11,9 +11,11 @@ def create_agent(
 ):
     db_agent = Agent(
         name=agent.name,
+        role=agent.role,
+        goal=agent.goal,
+        instructions=agent.instructions,
         agent_type=agent.agent_type,
         provider=agent.provider,
-        model_name=agent.model_name,
         workflow_id=workflow_id,
     )
 

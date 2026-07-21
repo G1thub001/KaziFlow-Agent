@@ -6,6 +6,9 @@ class AgentCreate(BaseModel):
     agent_type: str
     provider: str
     model_name: str
+    role: str
+    goal: str
+    instructions: str | None = None
 
 
 class AgentResponse(BaseModel):

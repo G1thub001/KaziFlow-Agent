@@ -1,4 +1,5 @@
 from app.providers.openrouter_provider import OpenRouterProvider
+from app.prompts.builder import PromptBuilder
 
 class AgentExecutor:
     """
@@ -10,16 +11,7 @@ class AgentExecutor:
         self.provider = OpenRouterProvider()
 
     def execute(self, agent, context):
-        system_prompt = f"""
-You are {agent.name}.
-
-Agent Type:
-{agent.agent_type}
-
-Your task is to assist within a workflow.
-
-Respond professionally and clearly.
-"""
+        system_prompt = PromptBuilder(agent).build()
 
         output = self.provider.generate(
             system_prompt=system_prompt,
