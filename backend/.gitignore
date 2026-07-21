@@ -1,13 +1,38 @@
+# Environment
 .env
+.env.*
 
+# Virtual environments
 .venv/
+venv/
+env/
 
+# Python
 __pycache__/
+*.py[cod]
+*.pyo
 
-*.pyc
-
+# Testing
 .pytest_cache/
+.coverage
+htmlcov/
 
+# IDEs
 .vscode/
-
 .idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Alembic cache
+.alembic/
+
+# Mypy
+.mypy_cache/
+
+# Ruff
+.ruff_cache/
