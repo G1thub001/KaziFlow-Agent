@@ -1,13 +1,29 @@
+from app.providers.openrouter_provider import OpenRouterProvider
+
 class AgentExecutor:
     """
     Executes a single agent.
     Later this class will call OpenAI, Ollama, Claude, etc.
     """
 
+    def __init__(self):
+        self.provider = OpenRouterProvider()
+
     def execute(self, agent, context):
-        output = (
-            f"{agent.name} processed:\n"
-            f"{context.current_message}"
+        system_prompt = f"""
+You are {agent.name}.
+
+Agent Type:
+{agent.agent_type}
+
+Your task is to assist within a workflow.
+
+Respond professionally and clearly.
+"""
+
+        output = self.provider.generate(
+            system_prompt=system_prompt,
+            user_prompt=context.current_message,
         )
 
         context.add_output(
