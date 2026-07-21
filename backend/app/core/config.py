@@ -15,5 +15,11 @@ class Settings(BaseSettings):
     class Config:
         env_file = ".env"
 
+    OPENROUTER_API_KEY: str
+
+    OPENROUTER_BASE_URL: str = "https://openrouter.ai/api/v1"
+
+    MODEL_NAME: str = "openai/gpt-4.1-mini"
+
 
 settings = Settings()
