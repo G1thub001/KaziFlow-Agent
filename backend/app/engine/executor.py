@@ -1,4 +1,7 @@
 from app.providers.openrouter_provider import OpenRouterProvider
+from app.prompts.builder import PromptBuilder
+
+from app.core.constants import DEFAULT_OUTPUT_FORMAT
 
 class AgentExecutor:
     """
@@ -10,25 +13,31 @@ class AgentExecutor:
         self.provider = OpenRouterProvider()
 
     def execute(self, agent, context):
-        system_prompt = f"""
-You are {agent.name}.
-
-Agent Type:
-{agent.agent_type}
-
-Your task is to assist within a workflow.
-
-Respond professionally and clearly.
-"""
-
-        output = self.provider.generate(
-            system_prompt=system_prompt,
-            user_prompt=context.current_message,
+        # Build the prompt using PromptBuilder with workflow state
+        system_prompt = PromptBuilder(agent).build(
+            user_request=context.user_request,
+            shared_document=context.get_document(),
+            document_version=context.get_version(),
+            previous_agent=context.get_previous_agent(),
+            knowledge=None,
+            output_format=DEFAULT_OUTPUT_FORMAT,
         )
 
-        context.add_output(
-            agent.name,
-            output,
+        # The user prompt is ALWAYS the original user request
+        # The shared document evolves in the system prompt
+        output = self.provider.generate(
+            system_prompt=system_prompt,
+            user_prompt=context.user_request,
+            temperature=agent.temperature,
+            max_tokens=agent.max_tokens,
+        )
+
+        # Update the shared document with the agent's contribution
+        context.update_document(
+            agent_name=agent.name,
+            role=agent.role or "Unknown",
+            execution_order=agent.execution_order,
+            output=output,
         )
 
         return {

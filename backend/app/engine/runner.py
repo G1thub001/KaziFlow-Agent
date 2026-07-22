@@ -18,19 +18,46 @@ class WorkflowRunner:
     ):
         context = ExecutionContext(user_input)
         started_at = datetime.utcnow()
+
+        print("=" * 60)
+        print(f"Starting workflow: {workflow.name}")
+        print("=" * 60)
+
         execution_results = []
 
-        for agent in workflow.agents:
+        # Sort agents by execution order
+        agents = sorted(
+            workflow.agents,
+            key=lambda agent: agent.execution_order,
+        )
+
+        # Execute each agent in order
+        for agent in agents:
+            # Skip inactive agents
+            if not agent.is_active:
+                print(f"Skipping {agent.name}")
+                continue
+
+            print("=" * 60)
+            print(f"Executing [{agent.execution_order}] {agent.name}")
+
             result = self.executor.execute(
                 agent,
                 context,
             )
             execution_results.append(result)
 
+            print(f"Completed {agent.name}")
+
         completed_at = datetime.utcnow()
         duration_ms = int(
             (completed_at - started_at).total_seconds() * 1000
         )
+
+        print("=" * 60)
+        print("Workflow complete.")
+        print(f"Duration: {duration_ms} ms")
+        print("=" * 60)
 
         return {
             "workflow_id": workflow.id,
@@ -45,5 +72,5 @@ class WorkflowRunner:
 
             "results": execution_results,
 
-            "context": context.outputs,
+            "context": context.history,
         }

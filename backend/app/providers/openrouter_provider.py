@@ -16,6 +16,8 @@ class OpenRouterProvider(BaseProvider):
         self,
         system_prompt: str,
         user_prompt: str,
+        temperature: float = 0.7,
+        max_tokens: int = 1000,
     ) -> str:
 
         response = self.client.chat.completions.create(
@@ -30,8 +32,8 @@ class OpenRouterProvider(BaseProvider):
                     "content": user_prompt,
                 },
             ],
-            max_tokens=500,
-            temperature=0.7,
+            max_tokens=max_tokens,
+            temperature=temperature,
         )
 
         return response.choices[0].message.content or ""
