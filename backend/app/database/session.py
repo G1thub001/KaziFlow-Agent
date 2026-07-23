@@ -14,3 +14,17 @@ SessionLocal = sessionmaker(
     autoflush=False,
     autocommit=False,
 )
+
+
+def get_db():
+    """
+    FastAPI database dependency.
+    """
+
+    db = SessionLocal()
+
+    try:
+        yield db
+
+    finally:
+        db.close()

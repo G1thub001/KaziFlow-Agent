@@ -38,7 +38,13 @@ class Workflow(Base):
     )
 
     agents = relationship(
-    "Agent",
-    back_populates="workflow",
-    cascade="all, delete-orphan",
-)
+        "Agent",
+        back_populates="workflow",
+        cascade="all, delete-orphan",
+    )
+
+    executions = relationship(
+        "Execution",
+        back_populates="workflow",
+        cascade="all, delete-orphan",
+    )

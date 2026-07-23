@@ -59,18 +59,54 @@ class WorkflowRunner:
         print(f"Duration: {duration_ms} ms")
         print("=" * 60)
 
+
+        total_tokens = sum(
+            result.get("total_tokens", 0)
+            for result in execution_results
+        )
+
+        total_duration = sum(
+            result.get("duration_ms", 0)
+            for result in execution_results
+        )
+
+        successful = sum(
+            1
+            for result in execution_results
+            if result["status"] == "completed"
+)
+
+        failed = len(execution_results) - successful
+
         return {
+
             "workflow_id": workflow.id,
+
             "workflow_name": workflow.name,
+
             "status": "completed",
 
-            "started_at": started_at.isoformat(),
-            "completed_at": completed_at.isoformat(),
-            "duration_ms": duration_ms,
+            "summary": {
 
-            "agents_executed": len(execution_results),
+                "agents": len(execution_results),
 
-            "results": execution_results,
+                "successful": successful,
 
-            "context": context.history,
+                "failed": failed,
+
+                "total_tokens": total_tokens,
+
+                "total_duration_ms": total_duration,
+
+            },
+
+        "started_at": started_at.isoformat(),
+
+        "completed_at": completed_at.isoformat(),
+
+        "duration_ms": duration_ms,
+
+        "results": execution_results,
+
+        "context": context.history,
         }

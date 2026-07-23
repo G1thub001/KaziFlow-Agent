@@ -1,3 +1,5 @@
+from urllib import response
+
 from openai import OpenAI
 
 from app.core.config import settings
@@ -36,4 +38,16 @@ class OpenRouterProvider(BaseProvider):
             temperature=temperature,
         )
 
-        return response.choices[0].message.content or ""
+        usage = response.usage
+
+        return {
+            "content": response.choices[0].message.content or "",
+
+            "model": response.model,
+
+            "prompt_tokens": usage.prompt_tokens,
+
+            "completion_tokens": usage.completion_tokens,
+
+            "total_tokens": usage.total_tokens,
+        }

@@ -56,6 +56,11 @@ class Agent(Base):
         back_populates="agents",
     )
 
+    executions = relationship(
+        "Execution",
+        back_populates="agent",
+    )
+
     # === Agent Intelligence Configuration ===
     role: Mapped[str | None] = mapped_column(
         String(255),

@@ -7,6 +7,12 @@ from app.api.routes.projects import router as project_router
 from app.api.routes.workflows import router as workflow_router
 from app.api.routes import agents
 
+from app.api.routes.executions import router as execution_router
+
+from app.api.routes.analytics import router as analytics_router
+
+
+
 app = FastAPI(
     title="KaziFlow Agent API"
 )
@@ -15,6 +21,8 @@ app.include_router(auth_router)
 app.include_router(project_router)
 app.include_router(workflow_router)
 app.include_router(agents.router)
+app.include_router(execution_router)
+app.include_router(analytics_router)
 
 
 @app.get("/")
